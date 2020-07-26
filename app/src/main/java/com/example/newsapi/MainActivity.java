@@ -40,26 +40,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //init ui elements
         title= findViewById(R.id.et_find_by_title);
         find=findViewById(R.id.BtnGet);
-        if (savedInstanceState != null) {
-            title.setText(savedInstanceState.getString("ID"));
-            initViews();
-        }
+
         database = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,
                 "News")
                 .allowMainThreadQueries()
-                .build();
+                .build(); // building DB
         initViews();
+        if (savedInstanceState != null) {
+            title.setText(savedInstanceState.getString("SEARCH"));
+        }
         find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    searchList = database.newsDAO().getSearch('%'+title.getText().toString()+'%');
-                recyclerAdapter2 = new RecyclerAdapter(searchList.size(), searchList);
-                    news.setAdapter(recyclerAdapter2);
+                    searchTitle(); //searching by Title
             }
         });
     }
+
+    private void searchTitle() {
+        searchList = database.newsDAO().getSearch('%'+title.getText().toString()+'%');
+        recyclerAdapter2 = new RecyclerAdapter(searchList.size()-1, searchList);
+        news.setAdapter(recyclerAdapter2);
+    }
+
     private void initViews() {
         news = findViewById(R.id.rv_news);
         news.setHasFixedSize(true);
@@ -80,15 +86,15 @@ public class MainActivity extends AppCompatActivity {
 
                             if (post != null) {
 
-                                for (int i = 0; i < 20; i++) {
+                                for (int i = 0; i < 20; i++) { //max 20 sources
                                         database.newsDAO().insertAll(new News(post.sources.get(i).title,
                                                 post.sources.get(i).description,
                                                 post.sources.get(i).imgUrl));
+                                        Log.d("dgsdgsdgsdg", String.valueOf(post.sources.size()));
                                 }
                                 newsList = database.newsDAO().getallNews();
                                 recyclerAdapter = new RecyclerAdapter(20, newsList);
                                 news.setAdapter(recyclerAdapter);
-
                             }
                         }
                         catch (Exception e)
@@ -102,5 +108,10 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Fail", t.getMessage());
                     }
                 });
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("SEARCH",title.getText().toString());
     }
 }

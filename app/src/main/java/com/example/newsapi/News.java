@@ -21,6 +21,7 @@ class News {
     @ColumnInfo(name = "URL")
     private String url;
 
+    //getters and Setters + constructor
     public int getId() {
         return id;
     }

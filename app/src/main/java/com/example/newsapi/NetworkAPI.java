@@ -8,7 +8,7 @@ class NetworkAPI {
     private static final String BASE_URL = "https://newsapi.org/";
     private Retrofit mRetrofit;
 
-    private NetworkAPI() {
+    private NetworkAPI() { // build Retrofit
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

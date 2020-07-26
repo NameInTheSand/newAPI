@@ -11,7 +11,7 @@ interface PlaceHolderAPI {
                                      @Query("from") String from,
                                      @Query("apiKey") String key);
 
-    public class Post {
+    public class Post { //POJO
         @SerializedName("articles")
         public ArrayList<Source> sources = new ArrayList<Source>();
         @SerializedName("totalResults")
