@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NewsAPI</string>
+    <string name="image">Image</string>
+    <string name="readMore">Read more</string>
+    <string name="findNews">Find news</string>
+    <string name="hinntFind">Please, enter title of news</string>
+</resources>

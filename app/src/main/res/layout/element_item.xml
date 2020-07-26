@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="420dp"
+    android:background="@color/colorBG"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/img_place"
+        android:layout_width="325dp"
+        android:layout_height="264dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/image"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="325dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="266dp"
+        android:maxLines="2"
+        android:background="@color/colorRV"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_desription"
+        android:layout_width="325dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="305dp"
+        android:background="@color/colorRV"
+        android:maxLines="3" />
+
+    <Button
+        android:id="@+id/btn_read_more"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="369dp"
+        android:background="@android:color/transparent"
+        android:text="@string/readMore"
+        android:textColor="#FF5722" />
+</FrameLayout>
