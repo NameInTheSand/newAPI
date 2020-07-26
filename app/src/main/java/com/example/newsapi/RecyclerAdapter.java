@@ -16,14 +16,10 @@ import java.util.ArrayList;
 class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private int size;
-    private ArrayList<String> titles;
-    private ArrayList<String> descriptions;
-    private ArrayList<String> urls;
-    public RecyclerAdapter(int size,ArrayList<String> titles, ArrayList<String> descriptions,ArrayList<String> url) {
+    private ArrayList<News> items;
+    public RecyclerAdapter(int size,ArrayList<News>items) {
         this.size= size;
-        this.titles=titles;
-        this.descriptions = descriptions;
-        this.urls = url;
+        this.items=items;
     }
     @NonNull
     @Override
@@ -34,9 +30,9 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.title.setText(titles.get(i));
-        viewHolder.description.setText(descriptions.get(i));
-        Picasso.get().load(urls.get(i)).resize(325,264).centerCrop().into(viewHolder.photo);
+        viewHolder.title.setText(items.get(i).getTitle());
+        viewHolder.description.setText(items.get(i).getDescriprion());
+        Picasso.get().load(items.get(i).getUrl()).resize(325,264).centerCrop().into(viewHolder.photo);
     }
 
     @Override
