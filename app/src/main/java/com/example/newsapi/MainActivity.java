@@ -8,7 +8,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -30,7 +32,10 @@ public class MainActivity extends AppCompatActivity {
     Button find;
     RecyclerView news;
     RecyclerAdapter recyclerAdapter;
+    RecyclerAdapter recyclerAdapter2;
     List<News> newsList;
+    List<News> searchList;
+    AppDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,19 @@ public class MainActivity extends AppCompatActivity {
             title.setText(savedInstanceState.getString("ID"));
             initViews();
         }
+        database = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,
+                "News")
+                .allowMainThreadQueries()
+                .build();
         initViews();
+        find.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    searchList = database.newsDAO().getSearch('%'+title.getText().toString()+'%');
+                recyclerAdapter2 = new RecyclerAdapter(searchList.size(), searchList);
+                    news.setAdapter(recyclerAdapter2);
+            }
+        });
     }
     private void initViews() {
         news = findViewById(R.id.rv_news);
@@ -51,11 +68,6 @@ public class MainActivity extends AppCompatActivity {
         loadJSON();
     }
     private void loadJSON() {
-        final AppDatabase database = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,
-                "News")
-                .allowMainThreadQueries()
-                .build();
-
         NetworkAPI.getInstance()
                 .getJSONApi()
                 .getPostofUser(type,sort,date,token)
@@ -67,8 +79,11 @@ public class MainActivity extends AppCompatActivity {
                         try {
 
                             if (post != null) {
+
                                 for (int i = 0; i < 20; i++) {
-                                    database.newsDAO().insertAll(new News(post.sources.get(i).title,post.sources.get(i).description,post.sources.get(i).imgUrl));
+                                        database.newsDAO().insertAll(new News(post.sources.get(i).title,
+                                                post.sources.get(i).description,
+                                                post.sources.get(i).imgUrl));
                                 }
                                 newsList = database.newsDAO().getallNews();
                                 recyclerAdapter = new RecyclerAdapter(20, newsList);

@@ -9,7 +9,8 @@ import java.util.List;
 interface NewsDAO {
     @Query("SELECT * from news")
     List<News> getallNews();
-
+    @Query("SELECT * from news WHERE title LIKE :seacrh ")
+    List<News> getSearch(String seacrh);
     @Insert
     void insertAll(News... news);
 }
