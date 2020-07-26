@@ -2,16 +2,23 @@ package com.example.newsapi;
 
 import android.media.Image;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-
+import androidx.room.PrimaryKey;
 
 
 @Entity
 class News {
-
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @ColumnInfo(name = "Title")
     private String title;
+
+    @ColumnInfo(name = "Description")
     private String descriprion;
+
+    @ColumnInfo(name = "URL")
     private String url;
 
     public int getId() {

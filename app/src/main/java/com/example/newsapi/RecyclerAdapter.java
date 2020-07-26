@@ -10,14 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import java.util.List;
 
-import java.net.URL;
-import java.util.ArrayList;
 class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private int size;
-    private ArrayList<News> items;
-    public RecyclerAdapter(int size,ArrayList<News>items) {
+    private List<News> items;
+    public RecyclerAdapter(int size,List<News>items) {
         this.size= size;
         this.items=items;
     }

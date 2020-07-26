@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button find;
     RecyclerView news;
     RecyclerAdapter recyclerAdapter;
-    ArrayList<News> newsList;
+    List<News> newsList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
         loadJSON();
     }
     private void loadJSON() {
-        newsList = new ArrayList<>();
+        final AppDatabase database = Room.databaseBuilder(getApplicationContext(),AppDatabase.class,
+                "News")
+                .allowMainThreadQueries()
+                .build();
+
         NetworkAPI.getInstance()
                 .getJSONApi()
                 .getPostofUser(type,sort,date,token)
@@ -61,12 +67,13 @@ public class MainActivity extends AppCompatActivity {
                         try {
 
                             if (post != null) {
-                                for (int i = 0; i <20; i++) {
-                                    News item = new News(post.sources.get(i).title,post.sources.get(i).description,post.sources.get(i).imgUrl);
-                                    newsList.add(item);
+                                for (int i = 0; i < 20; i++) {
+                                    database.newsDAO().insertAll(new News(post.sources.get(i).title,post.sources.get(i).description,post.sources.get(i).imgUrl));
                                 }
+                                newsList = database.newsDAO().getallNews();
                                 recyclerAdapter = new RecyclerAdapter(20, newsList);
                                 news.setAdapter(recyclerAdapter);
+
                             }
                         }
                         catch (Exception e)
